@@ -134,6 +134,7 @@ It can be run on a container service, such as K8
 
 ![bg right:40% 50%](images/ansible_log.png)
 
+Playbook tasks:
 ```cs
 - name: Copy shh keys over to eo-processor
   copy:
