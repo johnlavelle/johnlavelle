@@ -21,11 +21,18 @@ img[alt~="center"] {
 
 ---
 
+# The ECHOES web application
+
 ![center](images/echoes_site.JPG)
 
 ---
+# Sentinel Hub based processing chain
 
-[![width:900px center](images/eo_custom_scripts_site.JPG)](https://custom-scripts.sentinel-hub.com/#sentinel-2)
+* Many processing scripts available in the [Custom Scripts repo](https://custom-scripts.sentinel-hub.com/#sentinel-2)
+* Processing done on Sentinel-Hub's servers' 
+* Return results for ROI & time interval
+* Data returned as a GeoTIFF
+* Does mosaicing for given month, etc.
 
 ---
 # The system architecture
@@ -47,15 +54,17 @@ img[alt~="center"] {
 ---
 <!-- backgroundColor: default -->
 
-# Process Chain for source data
+# Processing using the source satellite data
 
 The CREODIAS object store contains over 20 PB of sallite data (stored in e.g. the SAFE format). 
 
-Code has been developed to process data. 
+Code has been developed to this process data. 
 
 It has a similar interface to the Sentinel-Hub processing chain.
 
-[![bg right width:300px](https://mermaid.ink/img/pako:eNo1z8GKAjEQBNBfafo0gv7AHITV8S6rsJdc2qR04s4k2ulZWMR_N8J464JXFP1gnwO45YvKradj59JX8w0f8QdS3CcUW9BqtXZp0xwg6ns6Z6UihmGIBgpiMotts9fsUcqcu-ZH38Qy5dMV3qhYViyIeMkjdJQY6vTDJSLH1mOE47aeQfTXsUvP6qZbXcAuxFrl9ixDwZJlsnz4T55b0wkf1EWpb4yzer4AdMdKBQ)](https://mermaid.live/edit#pako:eNo1z8GKAjEQBNBfafo0gv7AHITV8S6rsJdc2qR04s4k2ulZWMR_N8J464JXFP1gnwO45YvKradj59JX8w0f8QdS3CcUW9BqtXZp0xwg6ns6Z6UihmGIBgpiMotts9fsUcqcu-ZH38Qy5dMV3qhYViyIeMkjdJQY6vTDJSLH1mOE47aeQfTXsUvP6qZbXcAuxFrl9ixDwZJlsnz4T55b0wkf1EWpb4yzer4AdMdKBQ)
+Works SNAP, Satpy, ... 
+
+[![bg right:50% 40%](https://mermaid.ink/img/pako:eNo1j7FuAjEQRH9ltRVIUNBeESkEahCkO1Ns7IEz3NlkvYeEEP-OpZBuRnozo3mwzwHc8Enl2tH3yqXPyQ4e8QZS_I4oNqX5_MOlZbuHqO_omJWKGPo-GiiIyeGP-Gq3mj1KefsYFu1k83OGNyqWFdMDEc94gA4SQ119uETk2DoMcNxUGUQvjl16Vm681nKsQ6xZbo7SF8xYRsv7e_LcmI74h1ZR6oPhTT1fagRI9w)](https://mermaid.live/edit#pako:eNo1j7FuAjEQRH9ltRVIUNBeESkEahCkO1Ns7IEz3NlkvYeEEP-OpZBuRnozo3mwzwHc8Enl2tH3yqXPyQ4e8QZS_I4oNqX5_MOlZbuHqO_omJWKGPo-GiiIyeGP-Gq3mj1KefsYFu1k83OGNyqWFdMDEc94gA4SQ119uETk2DoMcNxUGUQvjl16Vm681nKsQ6xZbo7SF8xYRsv7e_LcmI74h1ZR6oPhTT1fagRI9w)
 
 ---
 
@@ -70,15 +79,11 @@ pre {
 ```cs
 #!/usr/bin/env python3
 
-#  Copyright (c) 2022.
-#  The ECHOES Project (https://echoesproj.eu/) / Compass Informatics
-
 from os.path import dirname
 from satpy import Scene, find_files_and_readers
 from shapely import wkt
 from eoian import utils
 from eoian import command_line_interface
-
 
 def main(input_file: str, area_wkt: str) -> "Dataset":
     files = find_files_and_readers(base_dir=dirname(input_file), reader='msi_safe')
@@ -91,34 +96,32 @@ def main(input_file: str, area_wkt: str) -> "Dataset":
     extents = scn.finest_area().area_extent_ll
     ad = utils.area_def(extents, 0.0001)
     s = scn.resample(ad)
-
     ndvi = (s['B08'] - s['B04']) / (s['B08'] + s['B04'])
     s['ndvi'] = ndvi
     s['ndvi'].attrs['area'] = s['B08'].attrs['area']
     del s['B04']; del s['B08']
     return s
 
-
 @command_line_interface.processing_chain_cli(to_zarr=False)
 def cli(input_file: str, area_wkt: str):
     return main(input_file, area_wkt)
-
 
 if __name__ == '__main__':
     cli()
 ```
 
+More examples: https://github.com/ECHOESProj/eo-processors
 
 ---
 
-# The code is containerised
+# The EO service is containerised
 
 
 ![bg w:300 right](images/dockler-vertical-logo-monochromatic.webp)
 
 This makes it easier to deploy
 
-The code can be run on a container service, such as K8
+It can be run on a container service, such as K8
 
 
 ---
@@ -127,14 +130,13 @@ The code can be run on a container service, such as K8
 
 [![width:640 center](images/jupyter.JPG)](https://185.52.192.218:8888)
 
-
 ---
 
 <!-- backgroundColor: default -->
 
 # Automation of the servers
 
-![bg right:40% 40%](images/ansible_log.png)
+![bg right:40% 50%](images/ansible_log.png)
 
 ```cs
 - name: Copy shh keys over to eo-processor
@@ -187,10 +189,11 @@ The code can be run on a container service, such as K8
 # The Repos
 
 **Overview Documentation:** https://github.com/ECHOESProj/eo-docs
-**Ansible playbook for server provisioning automation:** https://github.com/ECHOESProj/eo-playbooks
-**Processors code:** https://github.com/ECHOESProj/eo-processors
-**Sentinel-Hub automation code:** https://github.com/ECHOESProj/eo-custom-scripts
-**The object store processing chain code:** https://github.com/ECHOESProj/eoian
-**Read/write to object store code:** https://github.com/ECHOESProj/eo-io
-**Websockets server** https://github.com/ECHOESProj/websockets-server
+**Ansible playbook for server provisioning & automation:** https://github.com/ECHOESProj/eo-playbooks
+**Processors:** https://github.com/ECHOESProj/eo-processors
+**Sentinel-Hub automation:** https://github.com/ECHOESProj/eo-custom-scripts
+**The object store processing chain:** https://github.com/ECHOESProj/eoian
+**Read/write to object store:** https://github.com/ECHOESProj/eo-io
+**Websockets server:** https://github.com/ECHOESProj/websockets-server
+**Docker compose file:** https://github.com/ECHOESProj/eo-stack 
 **Jupyter Notebooks:** https://github.com/ECHOESProj/eo-notebooks
