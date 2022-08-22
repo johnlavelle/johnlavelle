@@ -122,7 +122,7 @@ This makes it easier to deploy,
 
 It can be run on a container service, such as K8,
 
-... which improves the efficiency of the processing and the scalability.
+... which improves the processing efficiency and scalability.
 
 ---
 
