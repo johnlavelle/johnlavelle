@@ -183,19 +183,14 @@ The code can be run on a container service, such as K8
 
 <!-- backgroundColor: default -->
 
+
 # The Repos
 
-**Overview Documentation:**  
-https://github.com/ECHOESProj/eo-docs
-**Ansible playbook for server provisioning automation:** 
-https://github.com/ECHOESProj/eo-playbooks
-**Processors code:** 
-https://github.com/ECHOESProj/eo-processors
-**Sentinel-Hub automation code:** 
-https://github.com/ECHOESProj/eo-custom-scripts
-**The object store processing chain code:**
-https://github.com/ECHOESProj/eoian
-**Read/write to object store code:**
-https://github.com/ECHOESProj/eo-io
-
-
+**Overview Documentation:** https://github.com/ECHOESProj/eo-docs
+**Ansible playbook for server provisioning automation:** https://github.com/ECHOESProj/eo-playbooks
+**Processors code:** https://github.com/ECHOESProj/eo-processors
+**Sentinel-Hub automation code:** https://github.com/ECHOESProj/eo-custom-scripts
+**The object store processing chain code:** https://github.com/ECHOESProj/eoian
+**Read/write to object store code:** https://github.com/ECHOESProj/eo-io
+**Websockets server** https://github.com/ECHOESProj/websockets-server
+**Jupyter Notebooks:** https://github.com/ECHOESProj/eo-notebooks
