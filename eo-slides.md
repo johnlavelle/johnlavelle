@@ -113,12 +113,16 @@ More examples: https://github.com/ECHOESProj/eo-processors
 # The EO service is containerised
 
 
-![bg w:300 right](images/dockler-vertical-logo-monochromatic.webp)
+![bg w:600 right ](images/1_qRdT-gCDxCX4bjME7LGACQ.png)
 
-This makes it easier to deploy
 
-It can be run on a container service, such as K8
+This makes it easier to deploy,
 
+... and run on your local machine.
+
+It can be run on a container service, such as K8,
+
+... which improves the efficiency of the processing and the scalability.
 
 ---
 
@@ -182,15 +186,21 @@ Playbook tasks:
 
 <!-- backgroundColor: default -->
 
+# The Repositories (https://github.com/ECHOESProj/)
 
-# The Repos
+**EO Service Code**
+Processors: https://github.com/ECHOESProj/eo-processors
+Sentinel-Hub automation: https://github.com/ECHOESProj/eo-custom-scripts
+The object store processing chain: https://github.com/ECHOESProj/eoian
+Read/write to object store: https://github.com/ECHOESProj/eo-io
+Websockets server: https://github.com/ECHOESProj/websockets-server
+Docker compose file: https://github.com/ECHOESProj/eo-stack 
 
-**Overview Documentation:** https://github.com/ECHOESProj/eo-docs
-**Ansible playbook for server provisioning & automation:** https://github.com/ECHOESProj/eo-playbooks
-**Processors:** https://github.com/ECHOESProj/eo-processors
-**Sentinel-Hub automation:** https://github.com/ECHOESProj/eo-custom-scripts
-**The object store processing chain:** https://github.com/ECHOESProj/eoian
-**Read/write to object store:** https://github.com/ECHOESProj/eo-io
-**Websockets server:** https://github.com/ECHOESProj/websockets-server
-**Docker compose file:** https://github.com/ECHOESProj/eo-stack 
-**Jupyter Notebooks:** https://github.com/ECHOESProj/eo-notebooks
+**Prototyping**
+Jupyter Notebooks: https://github.com/ECHOESProj/eo-notebooks
+
+**Automation**
+Server automation using Ansible: https://github.com/ECHOESProj/eo-playbooks
+
+**Documentation**
+Overview docs: https://github.com/ECHOESProj/eo-docs
