@@ -194,7 +194,7 @@ Sentinel-Hub automation: https://github.com/ECHOESProj/eo-custom-scripts
 The object store processing chain: https://github.com/ECHOESProj/eoian
 Read/write to object store: https://github.com/ECHOESProj/eo-io
 Websockets server: https://github.com/ECHOESProj/websockets-server
-Docker compose file: https://github.com/ECHOESProj/eo-stack 
+Docker Compose file: https://github.com/ECHOESProj/eo-stack 
 
 **Prototyping**
 Jupyter Notebooks: https://github.com/ECHOESProj/eo-notebooks
