@@ -43,20 +43,71 @@ img[alt~="center"] {
 
 ![center](images/eo_custom_scripts.gif)
 
----
 
+---
 <!-- backgroundColor: default -->
 
-# The code used in EO Service  
+# Process Chain for source data
 
-### The Python modules ([https://github.com/ECHOESProj](https://github.com/ECHOESProj/)):
+The CREODIAS object store contains over 20 PB of sallite data (stored in e.g. the SAFE format). 
 
-[![center](https://mermaid.ink/img/pako:eNptj0ELwjAMhf_KyHm7eOzBk_4Cr4UR2qhF24wkFWTsv9uhA0Fzenn5HrzMEDgSOFBDo0PCi2AeHjtfujbEY-JuGParClWN86hB0mT6CyQsm9nklpqEA6my_El8HaGHTJIxxdZlXlEPdqVMHlyTEeXmwZelcXWKreoxJmMBZ1KpB6zGp2cJ2_5mPu-AO-NdaXkBN01PpA)](https://mermaid.live/edit#pako:eNptj0ELwjAMhf_KyHm7eOzBk_4Cr4UR2qhF24wkFWTsv9uhA0Fzenn5HrzMEDgSOFBDo0PCi2AeHjtfujbEY-JuGParClWN86hB0mT6CyQsm9nklpqEA6my_El8HaGHTJIxxdZlXlEPdqVMHlyTEeXmwZelcXWKreoxJmMBZ1KpB6zGp2cJ2_5mPu-AO-NdaXkBN01PpA)
+Code has been developed to process data. 
 
-**eo_io:**  w/r to object sore
-**eoian:**  search and download the input satellite data
-**eo_custom_scripts:** generate results using the Sentinel-Hub API
-**eo_processors:** generate results using satellite data in the object store
+It has a similar interface to the Sentinel-Hub processing chain.
+
+[![bg right width:300px](https://mermaid.ink/img/pako:eNo1z8GKAjEQBNBfafo0gv7AHITV8S6rsJdc2qR04s4k2ulZWMR_N8J464JXFP1gnwO45YvKradj59JX8w0f8QdS3CcUW9BqtXZp0xwg6ns6Z6UihmGIBgpiMotts9fsUcqcu-ZH38Qy5dMV3qhYViyIeMkjdJQY6vTDJSLH1mOE47aeQfTXsUvP6qZbXcAuxFrl9ixDwZJlsnz4T55b0wkf1EWpb4yzer4AdMdKBQ)](https://mermaid.live/edit#pako:eNo1z8GKAjEQBNBfafo0gv7AHITV8S6rsJdc2qR04s4k2ulZWMR_N8J464JXFP1gnwO45YvKradj59JX8w0f8QdS3CcUW9BqtXZp0xwg6ns6Z6UihmGIBgpiMotts9fsUcqcu-ZH38Qy5dMV3qhYViyIeMkjdJQY6vTDJSLH1mOE47aeQfTXsUvP6qZbXcAuxFrl9ixDwZJlsnz4T55b0wkf1EWpb4yzer4AdMdKBQ)
+
+---
+
+<style scoped>
+pre {
+   font-size: 2rem;
+}
+</style>
+
+# An example processor 
+
+```cs
+#!/usr/bin/env python3
+
+#  Copyright (c) 2022.
+#  The ECHOES Project (https://echoesproj.eu/) / Compass Informatics
+
+from os.path import dirname
+from satpy import Scene, find_files_and_readers
+from shapely import wkt
+from eoian import utils
+from eoian import command_line_interface
+
+
+def main(input_file: str, area_wkt: str) -> "Dataset":
+    files = find_files_and_readers(base_dir=dirname(input_file), reader='msi_safe')
+    scn = Scene(filenames=files)
+    scn.load(['B04', 'B08'])
+    area = wkt.loads(area_wkt)
+    epsg = scn['B04'].area.crs.to_epsg()
+    xy_bbox = utils.get_bounds(area, epsg)
+    scn = scn.crop(xy_bbox=xy_bbox)
+    extents = scn.finest_area().area_extent_ll
+    ad = utils.area_def(extents, 0.0001)
+    s = scn.resample(ad)
+
+    ndvi = (s['B08'] - s['B04']) / (s['B08'] + s['B04'])
+    s['ndvi'] = ndvi
+    s['ndvi'].attrs['area'] = s['B08'].attrs['area']
+    del s['B04']; del s['B08']
+    return s
+
+
+@command_line_interface.processing_chain_cli(to_zarr=False)
+def cli(input_file: str, area_wkt: str):
+    return main(input_file, area_wkt)
+
+
+if __name__ == '__main__':
+    cli()
+```
+
 
 ---
 
@@ -68,7 +119,6 @@ img[alt~="center"] {
 This makes it easier to deploy
 
 The code can be run on a container service, such as K8
-
 
 
 ---
@@ -84,15 +134,46 @@ The code can be run on a container service, such as K8
 
 # Automation of the servers
 
-#
+![bg right:40% 40%](images/ansible_log.png)
 
-![center](images/ansible_log.png)
+```cs
+- name: Copy shh keys over to eo-processor
+  copy:
+    src: '{{ item.path }}'
+    dest: '{{ ansible_env.HOME }}/echoes-deploy/eo-processors/credentials/'
+    remote_src: yes
+    owner: '{{ ansible_user_id }}'
+    group: '{{ ansible_user_id }}'
+    mode: '0700'
+  with_items: "{{ ssh_files.files }}"
 
-#
+- name: Build Docker image
+  community.docker.docker_image:
+    name: '{{ item }}'
+    build:
+      path: '{{ ansible_env.HOME }}/echoes-deploy/{{ item }}'
+      network : host
+    source: build
+  loop:
+    - "eo-custom-scripts"
+    - "eo-processors"
+    - "websockets-server"
 
-[https://github.com/ECHOESProj/eo-playbooks](https://github.com/ECHOESProj/eo-playbooks)
+- name: Create a Docker volume
+  docker_volume:
+    name: el-vol
+
+- name: Run `docker-compose up`
+  community.docker.docker_compose:
+    project_src: '{{ ansible_env.HOME }}/echoes-deploy/eo-stack/'
+    env_file: '{{ ansible_env.HOME }}/env_file'
+    files:
+      - docker-compose.yml
+
+```
 
 ---
+
 
 <!-- backgroundColor: black -->
 
@@ -102,7 +183,19 @@ The code can be run on a container service, such as K8
 
 <!-- backgroundColor: default -->
 
-# Overview Documentation
+# The Repos
 
+**Overview Documentation:**  
 https://github.com/ECHOESProj/eo-docs
+**Ansible playbook for server provisioning automation:** 
+https://github.com/ECHOESProj/eo-playbooks
+**Processors code:** 
+https://github.com/ECHOESProj/eo-processors
+**Sentinel-Hub automation code:** 
+https://github.com/ECHOESProj/eo-custom-scripts
+**The object store processing chain code:**
+https://github.com/ECHOESProj/eoian
+**Read/write to object store code:**
+https://github.com/ECHOESProj/eo-io
+
 
