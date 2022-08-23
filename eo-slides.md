@@ -113,7 +113,7 @@ More examples: https://github.com/ECHOESProj/eo-processors
 # The EO service is containerised
 
 
-![bg w:600 right ](images/1_qRdT-gCDxCX4bjME7LGACQ.png)
+![bg w:600 right ](images/docker_kubernetes.png)
 
 
 This makes it easier to deploy,
@@ -136,7 +136,7 @@ It can be run on a container service, such as K8,
 
 # Automation of the servers
 
-![bg right:40% 50%](images/ansible_log.png)
+![bg right:40% 50%](images/Ansible_logo.svg.png)
 
 Playbook tasks:
 ```cs
