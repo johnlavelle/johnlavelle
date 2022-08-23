@@ -55,9 +55,9 @@ img[alt~="center"] {
 
 # Processing using the source satellite data
 
-* The CREODIAS object store contains over 20 PB of satellite data (stored in e.g. the SAFE format).
-* Code has been developed to process this data.
-* It has a similar interface to the Sentinel-Hub processing chain.
+* The CREODIAS object store contains over 20 PB of satellite data (stored in e.g. the SAFE format)
+* Code has been developed to process this data
+* It has a similar interface to the Sentinel-Hub processing chain
 * Works with SNAP, Satpy, ... 
 
 [![bg right:50% 40%](https://mermaid.ink/img/pako:eNo1j7FuAjEQRH9ltRVIUNBeESkEahCkO1Ns7IEz3NlkvYeEEP-OpZBuRnozo3mwzwHc8Enl2tH3yqXPyQ4e8QZS_I4oNqX5_MOlZbuHqO_omJWKGPo-GiiIyeGP-Gq3mj1KefsYFu1k83OGNyqWFdMDEc94gA4SQ119uETk2DoMcNxUGUQvjl16Vm681nKsQ6xZbo7SF8xYRsv7e_LcmI74h1ZR6oPhTT1fagRI9w)](https://mermaid.live/edit#pako:eNo1j7FuAjEQRH9ltRVIUNBeESkEahCkO1Ns7IEz3NlkvYeEEP-OpZBuRnozo3mwzwHc8Enl2tH3yqXPyQ4e8QZS_I4oNqX5_MOlZbuHqO_omJWKGPo-GiiIyeGP-Gq3mj1KefsYFu1k83OGNyqWFdMDEc94gA4SQ119uETk2DoMcNxUGUQvjl16Vm681nKsQ6xZbo7SF8xYRsv7e_LcmI74h1ZR6oPhTT1fagRI9w)
