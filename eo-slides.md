@@ -29,9 +29,9 @@ img[alt~="center"] {
 # Sentinel Hub based processing chain
 
 * Many processing scripts available in the [Custom Scripts repo](https://custom-scripts.sentinel-hub.com/#sentinel-2)
-* Python had been code developed to provide a CLI to the custom scripts
-* Processing done on Sentinel-Hub's servers'
-* Does mosaicing for given month, etc.
+* Python developed to provide a CLI to the custom scripts
+* The processing is done on Sentinel-Hub's servers'
+* It does mosaicing for given interval (month, etc.)
 
 ---
 # The system architecture
