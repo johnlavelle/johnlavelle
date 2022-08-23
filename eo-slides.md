@@ -38,7 +38,7 @@ img[alt~="center"] {
 
 ![bg w:480 right](images/img.png)
 
-* A request is sent to process a given ROI with the given processing script. 
+* A request is sent to process a given ROI with the given processing script
 * The processing is done remotely, on a Sentinel-Hub server
 * The results (GeoTIFF...) are stored an object store
 * The GeoTIFF is transferred to the web-service VM (running GeoServer)    
