@@ -15,9 +15,9 @@ img[alt~="center"] {
 
 
 # **The ECHOES Earth Observation Service**  <!-- fit -->
-
-![center right width:250px](images/echoes_icon.png)
-![center left width:700px](images/compass.jfif)
+#
+![center width:200px](images/echoes_icon.png)
+![center width:550px](images/compass.png)
 
 ---
 
@@ -176,7 +176,6 @@ Playbook tasks:
 ```
 
 ---
-
 
 <!-- backgroundColor: black -->
 
