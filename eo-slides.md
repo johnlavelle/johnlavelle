@@ -56,7 +56,7 @@ img[alt~="center"] {
 # Processing using the source satellite data
 
 * The CREODIAS object store contains over 20 PB of satellite data (stored in e.g. the SAFE format).
-* Code has been developed to this process data.
+* Code has been developed to process this data.
 * It has a similar interface to the Sentinel-Hub processing chain.
 * Works with SNAP, Satpy, ... 
 
