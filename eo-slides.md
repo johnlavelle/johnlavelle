@@ -21,6 +21,19 @@ img[alt~="center"] {
 
 ---
 
+Polar Orbiting Satellite   |  Sentinel Satellites
+:-------------------------:|:-------------------------:
+![center width:600px](images/satellite_orbit.gif) | ![center width:600px](images/sentinel_satellites.gif)
+
+---
+
+## The challenge is to...
+
+* Handle the large volumes of data for the satellites
+* Apply algorithms to get meaningful information from the raw satellite data
+
+---
+
 # The ECHOES web application
 
 ![center](images/echoes_site.JPG)
@@ -29,7 +42,7 @@ img[alt~="center"] {
 # Sentinel Hub based processing chain
 
 * Many processing scripts available in the [Custom Scripts repo](https://custom-scripts.sentinel-hub.com/#sentinel-2)
-* Python developed to provide a CLI to the custom scripts
+* Python code provides a CLI to the custom scripts
 * The processing is done on Sentinel-Hub's servers'
 * It does mosaicing for given interval (month, etc.)
 
@@ -107,6 +120,13 @@ if __name__ == '__main__':
 ```
 
 More examples: https://github.com/ECHOESProj/eo-processors
+
+---
+
+Development and production servers
+
+![w:600 center](images/eo_service.drawio.png
+)
 
 ---
 

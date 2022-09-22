@@ -1,0 +1,48 @@
+{
+    "headers": {
+        "accept": "image/tiff",
+        "content-type": "application/json"
+    },
+    "payload": {
+        "evalscript": "let script = (B08 - B04) / (B08 + B04);\n\nif (CLM == 1) {\n    return [0]\n} else {\nreturn [script]\n}",
+        "input": {
+            "bounds": {
+                "bbox": [
+                    -6.3780784606933,
+                    52.344188690186,
+                    -6.3552474975585,
+                    52.357749938966
+                ],
+                "properties": {
+                    "crs": "http://www.opengis.net/def/crs/EPSG/0/4326"
+                }
+            },
+            "data": [
+                {
+                    "dataFilter": {
+                        "mosaickingOrder": "leastCC",
+                        "timeRange": {
+                            "from": "2019-07-05T00:00:00Z",
+                            "to": "2019-07-05T23:59:59Z"
+                        }
+                    },
+                    "type": "sentinel-2-l1c"
+                }
+            ]
+        },
+        "output": {
+            "height": 156,
+            "responses": [
+                {
+                    "format": {
+                        "type": "image/tiff"
+                    },
+                    "identifier": "default"
+                }
+            ],
+            "width": 150
+        }
+    },
+    "timestamp": "2022-08-23T16:22:08.841922",
+    "url": "https://services.sentinel-hub.com/api/v1/process"
+}
