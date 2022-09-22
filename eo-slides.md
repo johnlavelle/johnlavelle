@@ -133,7 +133,7 @@ Development and production servers
 # The EO service is containerised
 
 
-![bg w:600 right ](images/docker_kubernetes.png)
+![bg w:400 right ](images/docker_kubernetes.png)
 
 
 This makes it easier to deploy,
@@ -156,7 +156,7 @@ It can be run on a container service, such as K8,
 
 # Automation of the servers
 
-![bg right:40% 50%](images/Ansible_logo.svg.png)
+![bg right:30% 50%](images/Ansible_logo.svg.png)
 
 Playbook tasks:
 ```cs
